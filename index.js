@@ -17,6 +17,26 @@ function generatesSecretNum() {
   return secretNum;
 }
 
+// Checking Vaild Name
+const validateName = (name) => {
+    if (name.length === 0) {
+      console.log(chalk.bgRedBright(`Name cannot be empty ${"🚫"}. Please enter your name.`));
+      return false;
+    }
+  
+    if (/[^A-Za-z\s]/.test(name)) {
+      console.log(chalk.bgRedBright(`Invalid name ${"🚫"}. Please use only letters and spaces.`));
+      return false;
+    }else if( name.length <= 4){
+        console.log(chalk.bgRedBright(`Invalid name ${"🚫"}. Please Enter proper name.`));
+        return false
+    }
+  
+    return true;
+  };
+  
+
+
 // Checking the Input is Valid
 const validateInput = (input) => {
   let alphabets = "abcdefghijklmnopqrstuvwxyz".split("");
@@ -60,52 +80,108 @@ const getHint = (secretNumber, guess) => {
 };
 
 
+// Extras
+// ADDING LEVELS TO Game
+const gameLevels = [
+    { name: "Easy", attempts: 10 },
+    { name: "Medium", attempts: 7 },
+    { name: "Hard", attempts: 4 },
+  ];
+  const chooseLevel =() =>{
+    console.log(chalk.magentaBright("Choose a game level:"));
+    for (let i = 0; i < gameLevels.length; i++) {
+      console.log(chalk.rgb(
+        34,
+        56,
+        402
+      )(`${i + 1}. ${gameLevels[i].name}`));
+    }
+  
+    while (true) {
+      const choice = prompt(chalk.rgb(
+        132,
+        160,
+        632
+      )(`Enter the number of the`) +  chalk.cyanBright(` level `)  + chalk.rgb(
+        132,
+        160,
+        632
+      )(`you want to play: `));
+      const selectedLevel = parseInt(choice);
+      
+      if (selectedLevel >= 1 && selectedLevel <= gameLevels.length) {
+        return gameLevels[selectedLevel - 1];
+      } else {
+        console.log(chalk.rgb(
+            234,
+            56,
+            42
+          )(`Invalid choice ${"🚫"}. Please select a valid level.`));
+      }
+    }
+  }
+
 // ----------------------------------------------------------------------
 
 // Main GAME "FUNCTION"
 function PlayGame() {
   let secretNumber = generatesSecretNum();
-  let attempts = 0;
-  let totalAllowedAttempts = 10;
+
+
   console.log(chalk.cyanBright(`Welcome to Bulls & Cows!  `));
   console.log(chalk.whiteBright(`${"🔎"} Instructions for Game
    ${"📌"} You're the guesser, and your task is to guess a 4-digit secret number with unique digits.
-   ${"📌"} ype a 4-digit number with no repeated digits .
+   ${"📌"} Type a 4-digit number with no repeated digits .
    ${"📌"} After each guess, you'll receive hints in the form of "bulls" (correct digits in the right position) and "cows" (correct digits in the wrong position).
    ${"📌"} You win when you guess all 4 digits correctly in the right positions.
   `));
-  let name = prompt(chalk.rgb(234, 56, 432)("What is your name? "));
-  console.log(chalk.rgb(503, 134, 898)(`Player's name  is: ${name}`));
-console.clear()
-  while (attempts < totalAllowedAttempts) {
-    const guess = prompt(chalk.green(` ${name} please guess A Number ${"➡"} `));
-    if (validateInput(guess)) {
-      if (guess !== secretNumber) {
-        attempts = attempts + 1;
-        console.log(chalk.magenta(`Remaining ${10 -attempts} Attempts\n`));
-        const hint = getHint(secretNumber, guess);
-        console.log(chalk.yellow(`Hint: ${hint}`));
-        if (attempts === totalAllowedAttempts) {
-          return chalk.black(
-            `You Lose the Game ${"👎"} . The Secret Number is:  ${secretNumber}`
+
+  let name;
+while(true) {
+    name =prompt(chalk.rgb(234, 56, 432)("What is your name? "));
+    if (validateName(name)){
+        console.log(chalk.rgb(503, 134, 898)(`Player's name  is: ${name}`));
+        break;
+}
+}
+
+let attempts =0;
+let selectedLevel = chooseLevel();
+let totalAllowedAttempts = selectedLevel.attempts;
+
+      console.clear()
+      while (attempts < totalAllowedAttempts) {
+        const guess = prompt(chalk.rgb(4,607,190)(` ${name} `) 
+        + chalk.green(`please guess A Number ${"➡"} `));
+        if (validateInput(guess)) {
+          if (guess !== secretNumber) {
+            attempts = attempts + 1;
+            console.log(chalk.magenta(`Remaining ${totalAllowedAttempts -attempts} Attempts\n`));
+            const hint = getHint(secretNumber, guess);
+            console.log(chalk.yellow(`Hint: ${hint}`));
+            if (attempts === totalAllowedAttempts) {
+              return chalk.bgBlack(
+                `You Lose ${"☹"} the Game ${"👎"} . The Secret Number is:  ${secretNumber}`
+              );
+            }
+          } else if (guess === secretNumber) {
+            return chalk.blue(
+              `${"🎊"} Congratulations! ${name}  ${"🥳"} guessed the secret number ${secretNumber} in ${attempts} attempts. ${"🎊"}`
+            );
+          }
+        } else {
+          console.log(
+            chalk.rgb(
+              234,
+              56,
+              42
+            )(
+              `${name} guess Invalid Number ${"🚫"}. Please enter a 4-digit number with unique digits.`
+            )
           );
         }
-      } else if (guess === secretNumber) {
-        return chalk.blue(
-          `${"🎊"} Congratulations! ${name} guessed the secret number ${secretNumber} in ${attempts} attempts. ${"🎊"}`
-        );
       }
-    } else {
-      console.log(
-        chalk.rgb(
-          234,
-          56,
-          42
-        )(
-          `${name} guess Invalid Number ${"🚫"}. Please enter a 4-digit number with unique digits.`
-        )
-      );
-    }
-  }
+
+
 }
 console.log(PlayGame());
