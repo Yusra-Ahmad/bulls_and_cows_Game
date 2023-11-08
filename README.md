@@ -1,6 +1,6 @@
 # Bulls and Cows Game 🐂🐄
 
-![Bulls and Cows Game Screenshot](screenshot.png)
+![Bulls and Cows Game Screenshot](bulls&cows.png)
 
 ## 🖱️Built With 🌠
 >1️⃣ Javascript
