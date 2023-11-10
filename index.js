@@ -181,7 +181,7 @@ function PlayGame() {
     if (playAgain.toLowerCase() !== "y") {
       return (isPlaying = false);
     }
+    console.clear();
   }
-  console.clear();
 }
 PlayGame();
