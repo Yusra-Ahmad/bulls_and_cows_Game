@@ -43,6 +43,13 @@ const validateName = (name) => {
 
 // Checking the Input is Valid
 const validateInput = (input) => {
+  console.log("input:", input);
+
+  if (typeof input !== "string") {
+    console.log("Bye! Thanks for playing : )")
+    process.exit()
+  }
+  
   let alphabets = "abcdefghijklmnopqrstuvwxyz".split("");
   if (input.length !== 4) {
     return false;
