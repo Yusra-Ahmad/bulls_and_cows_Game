@@ -154,14 +154,14 @@ function PlayGame() {
     while (attempts < totalAllowedAttempts) {
       const guess = prompt(
         chalk.rgb(4, 607, 190)(` ${name} `) +
-          chalk.green(`please guess A Number ${"➡"} `)
+          chalk.green(`please guess A Number ${"➡"}  `)
       );
       if (validateInput(guess)) {
         if (guess !== secretNumber) {
           attempts = attempts + 1;
           console.log(
             chalk.magenta(
-              `Remaining ${totalAllowedAttempts - attempts} Attempts\n`
+              `\nRemaining ${totalAllowedAttempts - attempts} Attempts`
             )
           );
           const hint = getHint(secretNumber, guess);
@@ -179,6 +179,7 @@ function PlayGame() {
               `${"🎊"} Congratulations! ${name}  ${"🥳"} guessed the secret number ${secretNumber} in ${attempts} attempts. ${"🎊"}`
             )
           );
+          break;
         }
       } else {
         console.log(
@@ -192,12 +193,11 @@ function PlayGame() {
         );
       }
     }
-    let playAgain = prompt(`Would you like to Play again? [y/n]`);
+    let playAgain = prompt(`Would you like to Play again? [y/n]: `);
     if (playAgain.toLowerCase() !== "y") {
       return (isPlaying = false);
     }
-
-    console.clear();
   }
+  console.clear();
 }
 PlayGame();
