@@ -43,30 +43,14 @@ const validateName = (name) => {
 
 // Checking the Input is Valid
 const validateInput = (input) => {
-  let alphabets = "abcdefghijklmnopqrstuvwxyz".split("");
   if (input.length !== 4) {
-    return false;
-  } else if (
-    input.includes(".") ||
-    input.includes("-") ||
-    input.includes("_") ||
-    input.includes("!") ||
-    input.includes("?")
-  ) {
-    return false;
+    return false
   }
+  const numbers = '0123456789'
 
-  for (let i = 0; i < input.length; i++) {
-    if (alphabets.includes(input[i].toLowerCase())) {
-      return false;
-    }
-    for (let j = i + 1; j < input.length; j++) {
-      if (input[i] === input[j]) {
-        return false;
-      }
-    }
-  }
-  return true;
+  return [...input].every(( char, index, array ) => (
+    numbers.includes(char) && array.indexOf(char) === index
+  ))
 };
 
 // Creating Hint for Game
@@ -153,7 +137,7 @@ function PlayGame() {
     console.clear();
     while (attempts < totalAllowedAttempts) {
       const guess = prompt(
-        chalk.rgb(4, 607, 190)(` ${name} `) +
+        chalk.rgb(4, 607, 190)(`${name} `) +
           chalk.green(`please guess A Number ${"➡"}  `)
       );
       if (validateInput(guess)) {
@@ -161,11 +145,11 @@ function PlayGame() {
           attempts = attempts + 1;
           console.log(
             chalk.magenta(
-              `\nRemaining ${totalAllowedAttempts - attempts} Attempts`
+              `Remaining ${totalAllowedAttempts - attempts} Attempts`
             )
           );
           const hint = getHint(secretNumber, guess);
-          console.log(chalk.yellow(`Hint: ${hint}`));
+          console.log(chalk.yellow(`Hint: ${hint}\n`));
           if (attempts === totalAllowedAttempts) {
             console.log(
               chalk.bgBlack(
