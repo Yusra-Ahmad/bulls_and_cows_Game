@@ -43,37 +43,14 @@ const validateName = (name) => {
 
 // Checking the Input is Valid
 const validateInput = (input) => {
-  console.log("input:", input);
-
-  if (typeof input !== "string") {
-    console.log("Bye! Thanks for playing : )")
-    process.exit()
-  }
-  
-  let alphabets = "abcdefghijklmnopqrstuvwxyz".split("");
   if (input.length !== 4) {
-    return false;
-  } else if (
-    input.includes(".") ||
-    input.includes("-") ||
-    input.includes("_") ||
-    input.includes("!") ||
-    input.includes("?")
-  ) {
-    return false;
+    return false
   }
+  const numbers = '0123456789'
 
-  for (let i = 0; i < input.length; i++) {
-    if (alphabets.includes(input[i].toLowerCase())) {
-      return false;
-    }
-    for (let j = i + 1; j < input.length; j++) {
-      if (input[i] === input[j]) {
-        return false;
-      }
-    }
-  }
-  return true;
+  return [...input].every(( char, index, array ) => (
+    numbers.includes(char) && array.indexOf(char) === index
+  ))
 };
 
 // Creating Hint for Game
@@ -160,19 +137,19 @@ function PlayGame() {
     console.clear();
     while (attempts < totalAllowedAttempts) {
       const guess = prompt(
-        chalk.rgb(4, 607, 190)(` ${name} `) +
-          chalk.green(`please guess A Number ${"➡"} `)
+        chalk.rgb(4, 607, 190)(`${name} `) +
+          chalk.green(`please guess A Number ${"➡"}  `)
       );
       if (validateInput(guess)) {
         if (guess !== secretNumber) {
           attempts = attempts + 1;
           console.log(
             chalk.magenta(
-              `Remaining ${totalAllowedAttempts - attempts} Attempts\n`
+              `Remaining ${totalAllowedAttempts - attempts} Attempts`
             )
           );
           const hint = getHint(secretNumber, guess);
-          console.log(chalk.yellow(`Hint: ${hint}`));
+          console.log(chalk.yellow(`Hint: ${hint}\n`));
           if (attempts === totalAllowedAttempts) {
             console.log(
               chalk.bgBlack(
@@ -186,6 +163,7 @@ function PlayGame() {
               `${"🎊"} Congratulations! ${name}  ${"🥳"} guessed the secret number ${secretNumber} in ${attempts} attempts. ${"🎊"}`
             )
           );
+          break;
         }
       } else {
         console.log(
@@ -199,12 +177,11 @@ function PlayGame() {
         );
       }
     }
-    let playAgain = prompt(`Would you like to Play again? [y/n]`);
+    let playAgain = prompt(`Would you like to Play again? [y/n]: `);
     if (playAgain.toLowerCase() !== "y") {
       return (isPlaying = false);
     }
-
-    console.clear();
   }
+  console.clear();
 }
 PlayGame();
