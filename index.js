@@ -161,7 +161,7 @@ function PlayGame() {
           attempts = attempts + 1;
           console.log(
             chalk.magenta(
-              `\nRemaining ${totalAllowedAttempts - attempts} Attempts`
+              `\n Remaining ${totalAllowedAttempts - attempts} Attempts`
             )
           );
           const hint = getHint(secretNumber, guess);
