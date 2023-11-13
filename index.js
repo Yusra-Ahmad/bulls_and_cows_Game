@@ -136,7 +136,7 @@ function PlayGame() {
 
     console.clear();
     while (attempts < totalAllowedAttempts) {
-      const guess = prompt(
+      const guess = prompt(`${"🙎 "}` +
         chalk.rgb(4, 607, 190)(`${name} `) +
           chalk.green(`please guess A Number ${"➡"}  `)
       );
